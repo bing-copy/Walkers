@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1594647-67D1-460B-A396-FA391EECD718}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cosmos.Walkers", "src\Cosmos.Walkers\Cosmos.Walkers.csproj", "{4A27323F-0F38-4CAE-AEA8-9D1625FA2909}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4A27323F-0F38-4CAE-AEA8-9D1625FA2909} = {E1594647-67D1-460B-A396-FA391EECD718}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A27323F-0F38-4CAE-AEA8-9D1625FA2909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A27323F-0F38-4CAE-AEA8-9D1625FA2909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A27323F-0F38-4CAE-AEA8-9D1625FA2909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A27323F-0F38-4CAE-AEA8-9D1625FA2909}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
