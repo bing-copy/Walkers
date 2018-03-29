@@ -5,5 +5,6 @@
         string Name { get; }
         
         bool IsBuildIn { get; }
+        bool IsRoot { get; }
     }
 }

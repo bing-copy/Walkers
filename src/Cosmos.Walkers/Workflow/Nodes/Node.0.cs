@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Cosmos.Abstractions.Workflow;
-using Cosmos.Walkers.Workflow.Nodes.Extensions;
 
 namespace Cosmos.Walkers.Workflow.Nodes {
     public abstract class Node : IFlowChartNode<string>, IModifiable<string> {
@@ -28,15 +28,24 @@ namespace Cosmos.Walkers.Workflow.Nodes {
         public IEnumerable<string> ParentIdList => _parents.Select(x => x.Id);
         public IEnumerable<string> ChildIdList => _children.Select(x => x.Id);
 
+        protected IFlowChartNode<string> GetFirstOrDefaultChild() {
+            return _children.FirstOrDefault();
+        }
+
         public virtual void CheckSelf() {
             if (string.IsNullOrWhiteSpace(Id)) throw new ArgumentNullException(nameof(Id));
             if (string.IsNullOrWhiteSpace(Key)) throw new ArgumentNullException(nameof(Key));
             if (string.IsNullOrWhiteSpace(Name)) throw new ArgumentNullException(nameof(Name));
         }
 
-        public virtual bool IsBuildIn => false;
+        public abstract Task Next(WorkflowContext context);
+        public abstract Task Before(WorkflowContext context);
+        public abstract Task After(WorkflowContext context);
 
-        public void UpdateWorkflowContainer(IWorkflowStation<string> workflow) {
+        public virtual bool IsBuildIn => false;
+        public virtual bool IsRoot { get; set; }
+
+        public virtual void UpdateWorkflowContainer(IWorkflowStation<string> workflow) {
             if (Workflow == null || Workflow != workflow) {
                 Workflow = workflow;
             }
@@ -48,55 +57,59 @@ namespace Cosmos.Walkers.Workflow.Nodes {
             }
         }
 
-        public void AppendParent(IFlowChartNode<string> node) {
+        public virtual void AppendParent(IFlowChartNode<string> node) {
             if (node == null) throw new ArgumentNullException(nameof(node));
             node.CheckSelf();
             if (_parents.Any(x => x.Id == node.Id)) return;
             _parents.Add(node);
         }
 
-        public void AppendParents(IEnumerable<IFlowChartNode<string>> nodes) {
+        public virtual void AppendParents(IEnumerable<IFlowChartNode<string>> nodes) {
             if (nodes == null) throw new ArgumentNullException(nameof(nodes));
-            nodes.CheckSelves();
+            foreach (var item in nodes) {
+                AppendParent(item);
+            }
         }
 
-        public void AppendChild(IFlowChartNode<string> node) {
+        public virtual void AppendChild(IFlowChartNode<string> node) {
             if (node == null) throw new ArgumentNullException(nameof(node));
             node.CheckSelf();
             if (_children.Any(x => x.Id == node.Id)) return;
             _children.Add(node);
         }
 
-        public void AppendChildren(IEnumerable<IFlowChartNode<string>> nodes) {
+        public virtual void AppendChildren(IEnumerable<IFlowChartNode<string>> nodes) {
             if (nodes == null) throw new ArgumentNullException(nameof(nodes));
-            nodes.CheckSelves();
+            foreach (var item in nodes) {
+                AppendChild(item);
+            }
         }
 
-        public void RemoveParent(string id) {
+        public virtual void RemoveParent(string id) {
             if (string.IsNullOrWhiteSpace(id)) return;
             RemoveParent(_parents.FirstOrDefault(x => x.Id == id));
         }
 
-        public void RemoveParent(IFlowChartNode<string> node) {
+        public virtual void RemoveParent(IFlowChartNode<string> node) {
             if (node == null) return;
             _parents.Remove(node);
         }
 
-        public void RemoveChild(string id) {
+        public virtual void RemoveChild(string id) {
             if (string.IsNullOrWhiteSpace(id)) return;
             RemoveChild(_children.FirstOrDefault(x => x.Id == id));
         }
 
-        public void RemoveChild(IFlowChartNode<string> node) {
+        public virtual void RemoveChild(IFlowChartNode<string> node) {
             if (node == null) return;
             _children.Remove(node);
         }
 
-        public void RemoveAllParents() {
+        public virtual void RemoveAllParents() {
             _parents.Clear();
         }
 
-        public void RemoveAllChildren() {
+        public virtual void RemoveAllChildren() {
             _children.Clear();
         }
 

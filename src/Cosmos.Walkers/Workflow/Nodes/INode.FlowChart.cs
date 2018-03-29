@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cosmos.Abstractions.Workflow;
 
 namespace Cosmos.Walkers.Workflow.Nodes {
@@ -11,5 +12,10 @@ namespace Cosmos.Walkers.Workflow.Nodes {
         IEnumerable<T> ChildIdList { get; }
 
         void CheckSelf();
+
+        Task Next(WorkflowContext context);
+
+        Task Before(WorkflowContext context);
+        Task After(WorkflowContext context);
     }
 }
