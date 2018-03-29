@@ -3,6 +3,6 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Cosmos.Abstractions" Version="0.1.0-alpha2-102002" />
+    <PackageReference Include="Cosmos.Abstractions" Version="0.1.0-alpha2-102003" />
   </ItemGroup>
 </Project>
